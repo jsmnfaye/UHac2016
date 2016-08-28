@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MAP B</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+    <script>
+
+      var locations = [
+        ['St. Michael\'s Medical Center', 14.5826228, 121.0534564, '2'],
+        ['St. Patrick\'s Medical Systems', 14.585618, 121.048296, '1'],
+        ['Galileo Surgicenter and Vision Institute', 14.5841234, 121.0558927, '3'],
+        ['Medical Plaza Ortigas', 14.5803972, 121.0594192, '2'],
+        ['PhilhealthCare Incorporated', 14.585058, 121.056691, '4']
+      ];
+
+      function initMap() {
+        var test = {lat: 14.583497, lng: 121.057149};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: test,
+          zoom: 15
+        });
+
+        setMarkers(map,locations)
+      }
+
+      function setMarkers(map,locations){
+
+        var marker, i;
+
+        for (i = 0; i < locations.length; i++){
+
+           var a = locations[i][0]
+           var lat = locations[i][1]
+           var long = locations[i][2]
+           var add =  locations[i][3]
+
+           latlngset = new google.maps.LatLng(lat, long);
+
+           var marker = new google.maps.Marker({
+              map: map, title: a , position: latlngset
+            });
+
+            map.setCenter(marker.getPosition())
+            var content = '<h2 class="firstHeading">'+a+'</h2>'+'No. of Pediatricians: '+add+'<br><a href="#">Schedule an appointment</a>'
+
+            var infowindow = new google.maps.InfoWindow()
+
+            google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
+              return function() {
+               infowindow.setContent(content);
+               infowindow.open(map,marker);
+              };
+            })(marker,content,infowindow));
+
+          }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBM3yBzCkRqMrEBwDgxYyQNza6ioy3yB_s&libraries=places&callback=initMap" async defer></script>
+  </body>
+</html>
